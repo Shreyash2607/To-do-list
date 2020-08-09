@@ -3,46 +3,29 @@ const bodyParser = require("body-parser");
 const ejs = require("ejs");
 
 const app = express();
+//var urlencodedparser = body-parser.urlencoded({extended:true});
 app.set('view engine','ejs');
+app.use(bodyParser.urlencoded({extended:true}));
+var Item="";
 
 app.get("/" , function(req,res){
 	var today = new Date();
 	var currentDay = today.getDay();
-	var day="";
-	if(currentDay===6 || currentDay === 0)
-	{
-		day = "weekend";
-		console.log(today);
-	}
-	else
-	{
-		day = "weekday";
-		console.log(today);
-	}
-		 res.render("list" , {kindOfDay : day});
-		 //res.sendFile(__dirname+"/index.html");
+	var options = {
+		weekday : "long",
+		day : "numeric",
+		month : "long"
+	};
 
+	var day = today.toLocaleDateString("en-US",options);
+	res.render("list" , {kindOfDay:day , newListItem:Item});
 });
-// app.get("/users", auth ,(req,res)=>{
-// 	res.send('users page');
-// })
 
-// function logger (req,res,next){
-// 	console.log('logger');
-// 	next();
-// }
-
-// function auth(req,res,next){
-	
-// 	if(req.query.admin === 'true')
-// 	{
-// 		next();
-// 	}
-// 	else
-// 	{
-// 		res.send("No auth");
-// 	}
-// }
+app.post("/",function(req,res){
+	console.log(req.body);
+	Item = req.body.newItem;
+	res.redirect("/");
+});
 
 
 app.listen(3000,function(){
