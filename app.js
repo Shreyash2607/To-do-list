@@ -6,7 +6,7 @@ const app = express();
 //var urlencodedparser = body-parser.urlencoded({extended:true});
 app.set('view engine','ejs');
 app.use(bodyParser.urlencoded({extended:true}));
-var Item="";
+var Items=[];
 
 app.get("/" , function(req,res){
 	var today = new Date();
@@ -18,12 +18,13 @@ app.get("/" , function(req,res){
 	};
 
 	var day = today.toLocaleDateString("en-US",options);
-	res.render("list" , {kindOfDay:day , newListItem:Item});
+	res.render("list" , {kindOfDay:day , newListItems:Items});
 });
 
 app.post("/",function(req,res){
 	console.log(req.body);
-	Item = req.body.newItem;
+	var Item = req.body.newItem;
+	Items.push(item);
 	res.redirect("/");
 });
 
